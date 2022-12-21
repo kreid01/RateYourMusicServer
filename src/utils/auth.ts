@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { sign, verify } from "jsonwebtoken";
 import { user } from "@prisma/client";
+import "dotenv/config";
 
 export interface MyContext {
   req: Request;
@@ -44,7 +45,7 @@ export const createRefreshToken = (user: user) => {
 };
 
 export const sendRefreshToken = (res: Response, token: string) => {
-  res.cookie("jid", token, {
+  res.cookie("mytoken", token, {
     httpOnly: true,
     path: "/refresh_token",
   });

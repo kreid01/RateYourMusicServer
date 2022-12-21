@@ -8,12 +8,25 @@ type LoginResponse {
 
 type Mutation {
   login(email: String!, password: String!): LoginResponse
+  postReview(description: String!, posterId: Int!, rating: Int!, releaseId: Int!, title: String!): review
   register(email: String!, password: String!, username: String!): user
 }
 
 type Query {
+  getReviewById: review
+  getReviews: [review]
   getUser: user
   getUsers: [user]
+}
+
+type review {
+  description: String
+  id: Int
+  postDate: String
+  posterId: Int
+  rating: Int
+  releaseId: Int
+  title: String
 }
 
 type user {

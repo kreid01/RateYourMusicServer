@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.2",
     "@apollo/server": "^4.3.0",
+    "@as-integrations/aws-lambda": "^1.1.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

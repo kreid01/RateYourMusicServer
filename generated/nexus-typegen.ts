@@ -33,6 +33,15 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  review: { // root type
+    description?: string | null; // String
+    id?: number | null; // Int
+    postDate?: string | null; // String
+    posterId?: number | null; // Int
+    rating?: number | null; // Int
+    releaseId?: number | null; // Int
+    title?: string | null; // String
+  }
   user: { // root type
     email?: string | null; // String
     id?: number | null; // Int
@@ -58,11 +67,23 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     login: NexusGenRootTypes['LoginResponse'] | null; // LoginResponse
+    postReview: NexusGenRootTypes['review'] | null; // review
     register: NexusGenRootTypes['user'] | null; // user
   }
   Query: { // field return type
+    getReviewById: NexusGenRootTypes['review'] | null; // review
+    getReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getUser: NexusGenRootTypes['user'] | null; // user
     getUsers: Array<NexusGenRootTypes['user'] | null> | null; // [user]
+  }
+  review: { // field return type
+    description: string | null; // String
+    id: number | null; // Int
+    postDate: string | null; // String
+    posterId: number | null; // Int
+    rating: number | null; // Int
+    releaseId: number | null; // Int
+    title: string | null; // String
   }
   user: { // field return type
     email: string | null; // String
@@ -79,11 +100,23 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     login: 'LoginResponse'
+    postReview: 'review'
     register: 'user'
   }
   Query: { // field return type name
+    getReviewById: 'review'
+    getReviews: 'review'
     getUser: 'user'
     getUsers: 'user'
+  }
+  review: { // field return type name
+    description: 'String'
+    id: 'Int'
+    postDate: 'String'
+    posterId: 'Int'
+    rating: 'Int'
+    releaseId: 'Int'
+    title: 'String'
   }
   user: { // field return type name
     email: 'String'
@@ -99,6 +132,13 @@ export interface NexusGenArgTypes {
     login: { // args
       email: string; // String!
       password: string; // String!
+    }
+    postReview: { // args
+      description: string; // String!
+      posterId: number; // Int!
+      rating: number; // Int!
+      releaseId: number; // Int!
+      title: string; // String!
     }
     register: { // args
       email: string; // String!

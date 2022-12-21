@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+      nodejs: 10
+  pre_build:
+    command:
+      - echo Installing Dependancies
+      - npm install
+      - ${aws ecr get-login --no-include-email -- region $AWS_DEFAULT_REGION}
+  build:
+    commands:
+      - echo Testing
+      - npm run build
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecs.$AWS_DEFAULT_REGION.amazonawc.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+  post-build:
+    commands:
+      - echo Pushing the docker image
+      - docker push $AWS_ACCOUNT_ID.dkr.ecs.$AWS_DEFAULT_REGION.amazonawc.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - printf '[{"name":"rym","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecs.$AWS_DEFAULT_REGION.amazonawc.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
+artifact: 
+  files: imagedefinitions.json

@@ -1,4 +1,4 @@
-import { sendRefreshToken, createRefreshToken } from "./../utils/auth";
+import { sendRefreshToken, createRefreshToken } from "../utils/auth";
 import { compare, hash } from "bcryptjs";
 import { verify } from "jsonwebtoken";
 import { FieldResolver } from "nexus";
