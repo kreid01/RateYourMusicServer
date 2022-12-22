@@ -7,16 +7,53 @@ type LoginResponse {
 }
 
 type Mutation {
+  deleteArtist: artist
+  deleteRelease: release
+  deleteReview: review
+  deleteUser: user
   login(email: String!, password: String!): LoginResponse
+  postArtist(born: String!, genres: [String]!, name: String!, relatedArtists: [String]!, type: String!): artist
+  postRelease(artistId: Int!, cover: String!, genres: [String]!, language: String!, recorded: String!, title: String!, tracks: [String]!, type: String!): release
   postReview(description: String!, posterId: Int!, rating: Int!, releaseId: Int!, title: String!): review
   register(email: String!, password: String!, username: String!): user
+  updateArtist(genres: [String]!, name: String!, relatedArtists: [String]!): artist
+  updateRelease(cover: String!, genres: [String]!, id: Int!, language: String!, rating: Int!, ratingCount: Int!, recorded: String!, title: String!, tracks: [String]!, type: String!): release
+  updateReview(description: String!, rating: Int!, title: String!): review
 }
 
 type Query {
+  getAllArtists: [artist]
+  getAllReleases: [release]
+  getArtistById(id: Int!): artist
+  getReleaseById(id: Int!): release
   getReviewById: review
   getReviews: [review]
   getUser: user
   getUsers: [user]
+  searchArtists(search: String!): [artist]
+}
+
+type artist {
+  born: String
+  genres: [String]
+  id: Int
+  name: String
+  relatedArtists: [String]
+  type: String
+}
+
+type release {
+  artistId: Int
+  cover: String
+  genres: [String]
+  id: Int
+  language: String
+  rating: Int
+  ratingCount: Int
+  recorded: String
+  title: String
+  tracks: [String]
+  type: String
 }
 
 type review {

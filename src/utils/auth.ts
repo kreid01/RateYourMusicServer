@@ -43,10 +43,3 @@ export const createRefreshToken = (user: user) => {
     }
   );
 };
-
-export const sendRefreshToken = (res: Response, token: string) => {
-  res.cookie("mytoken", token, {
-    httpOnly: true,
-    path: "/refresh_token",
-  });
-};

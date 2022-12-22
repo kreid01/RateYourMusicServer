@@ -33,6 +33,27 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  artist: { // root type
+    born?: string | null; // String
+    genres?: Array<string | null> | null; // [String]
+    id?: number | null; // Int
+    name?: string | null; // String
+    relatedArtists?: Array<string | null> | null; // [String]
+    type?: string | null; // String
+  }
+  release: { // root type
+    artistId?: number | null; // Int
+    cover?: string | null; // String
+    genres?: Array<string | null> | null; // [String]
+    id?: number | null; // Int
+    language?: string | null; // String
+    rating?: number | null; // Int
+    ratingCount?: number | null; // Int
+    recorded?: string | null; // String
+    title?: string | null; // String
+    tracks?: Array<string | null> | null; // [String]
+    type?: string | null; // String
+  }
   review: { // root type
     description?: string | null; // String
     id?: number | null; // Int
@@ -66,15 +87,50 @@ export interface NexusGenFieldTypes {
     accessToken: string | null; // String
   }
   Mutation: { // field return type
+    deleteArtist: NexusGenRootTypes['artist'] | null; // artist
+    deleteRelease: NexusGenRootTypes['release'] | null; // release
+    deleteReview: NexusGenRootTypes['review'] | null; // review
+    deleteUser: NexusGenRootTypes['user'] | null; // user
     login: NexusGenRootTypes['LoginResponse'] | null; // LoginResponse
+    postArtist: NexusGenRootTypes['artist'] | null; // artist
+    postRelease: NexusGenRootTypes['release'] | null; // release
     postReview: NexusGenRootTypes['review'] | null; // review
     register: NexusGenRootTypes['user'] | null; // user
+    updateArtist: NexusGenRootTypes['artist'] | null; // artist
+    updateRelease: NexusGenRootTypes['release'] | null; // release
+    updateReview: NexusGenRootTypes['review'] | null; // review
   }
   Query: { // field return type
+    getAllArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
+    getAllReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
+    getArtistById: NexusGenRootTypes['artist'] | null; // artist
+    getReleaseById: NexusGenRootTypes['release'] | null; // release
     getReviewById: NexusGenRootTypes['review'] | null; // review
     getReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getUser: NexusGenRootTypes['user'] | null; // user
     getUsers: Array<NexusGenRootTypes['user'] | null> | null; // [user]
+    searchArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
+  }
+  artist: { // field return type
+    born: string | null; // String
+    genres: Array<string | null> | null; // [String]
+    id: number | null; // Int
+    name: string | null; // String
+    relatedArtists: Array<string | null> | null; // [String]
+    type: string | null; // String
+  }
+  release: { // field return type
+    artistId: number | null; // Int
+    cover: string | null; // String
+    genres: Array<string | null> | null; // [String]
+    id: number | null; // Int
+    language: string | null; // String
+    rating: number | null; // Int
+    ratingCount: number | null; // Int
+    recorded: string | null; // String
+    title: string | null; // String
+    tracks: Array<string | null> | null; // [String]
+    type: string | null; // String
   }
   review: { // field return type
     description: string | null; // String
@@ -99,15 +155,50 @@ export interface NexusGenFieldTypeNames {
     accessToken: 'String'
   }
   Mutation: { // field return type name
+    deleteArtist: 'artist'
+    deleteRelease: 'release'
+    deleteReview: 'review'
+    deleteUser: 'user'
     login: 'LoginResponse'
+    postArtist: 'artist'
+    postRelease: 'release'
     postReview: 'review'
     register: 'user'
+    updateArtist: 'artist'
+    updateRelease: 'release'
+    updateReview: 'review'
   }
   Query: { // field return type name
+    getAllArtists: 'artist'
+    getAllReleases: 'release'
+    getArtistById: 'artist'
+    getReleaseById: 'release'
     getReviewById: 'review'
     getReviews: 'review'
     getUser: 'user'
     getUsers: 'user'
+    searchArtists: 'artist'
+  }
+  artist: { // field return type name
+    born: 'String'
+    genres: 'String'
+    id: 'Int'
+    name: 'String'
+    relatedArtists: 'String'
+    type: 'String'
+  }
+  release: { // field return type name
+    artistId: 'Int'
+    cover: 'String'
+    genres: 'String'
+    id: 'Int'
+    language: 'String'
+    rating: 'Int'
+    ratingCount: 'Int'
+    recorded: 'String'
+    title: 'String'
+    tracks: 'String'
+    type: 'String'
   }
   review: { // field return type name
     description: 'String'
@@ -133,6 +224,23 @@ export interface NexusGenArgTypes {
       email: string; // String!
       password: string; // String!
     }
+    postArtist: { // args
+      born: string; // String!
+      genres: Array<string | null>; // [String]!
+      name: string; // String!
+      relatedArtists: Array<string | null>; // [String]!
+      type: string; // String!
+    }
+    postRelease: { // args
+      artistId: number; // Int!
+      cover: string; // String!
+      genres: Array<string | null>; // [String]!
+      language: string; // String!
+      recorded: string; // String!
+      title: string; // String!
+      tracks: Array<string | null>; // [String]!
+      type: string; // String!
+    }
     postReview: { // args
       description: string; // String!
       posterId: number; // Int!
@@ -144,6 +252,39 @@ export interface NexusGenArgTypes {
       email: string; // String!
       password: string; // String!
       username: string; // String!
+    }
+    updateArtist: { // args
+      genres: Array<string | null>; // [String]!
+      name: string; // String!
+      relatedArtists: Array<string | null>; // [String]!
+    }
+    updateRelease: { // args
+      cover: string; // String!
+      genres: Array<string | null>; // [String]!
+      id: number; // Int!
+      language: string; // String!
+      rating: number; // Int!
+      ratingCount: number; // Int!
+      recorded: string; // String!
+      title: string; // String!
+      tracks: Array<string | null>; // [String]!
+      type: string; // String!
+    }
+    updateReview: { // args
+      description: string; // String!
+      rating: number; // Int!
+      title: string; // String!
+    }
+  }
+  Query: {
+    getArtistById: { // args
+      id: number; // Int!
+    }
+    getReleaseById: { // args
+      id: number; // Int!
+    }
+    searchArtists: { // args
+      search: string; // String!
     }
   }
 }

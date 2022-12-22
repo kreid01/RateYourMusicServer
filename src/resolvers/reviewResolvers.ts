@@ -5,7 +5,7 @@ export const postReviewResolver: FieldResolver<
   "Mutation",
   "postReview"
 > = async (_, args, __) => {
-  const { posterId, releaseId, title, description, rating, postDate } = args;
+  const { posterId, releaseId, title, description, rating } = args;
   try {
     const newReview = await prisma.review.create({
       data: {
@@ -14,7 +14,7 @@ export const postReviewResolver: FieldResolver<
         title,
         description,
         rating,
-        postDate,
+        postDate: new Date(),
       },
     });
     return newReview;
@@ -55,7 +55,7 @@ export const deleteReviewResolver: FieldResolver<
   }
 };
 
-export const updateReviewByIdResolver: FieldResolver<
+export const updateReviewResolver: FieldResolver<
   "Mutation",
   "updateReviewById"
 > = async (_, args, __) => {

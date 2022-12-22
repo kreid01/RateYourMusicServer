@@ -1,12 +1,14 @@
 import { extendType, intArg, list, nonNull, stringArg } from "nexus";
 import { objectType } from "nexus";
 import {
-  getAllReviewResolver,
-  getReviewByIdResolver,
-  postReviewResolver,
-} from "../resolvers/reviewResolvers";
+  deleteReleaseResolver,
+  getAllReleasesResolver,
+  getReleaseByIdResolver,
+  postReleaseResolver,
+  updateReleaseResolver,
+} from "../resolvers/releaseResolver";
 
-export const review = objectType({
+export const release = objectType({
   name: "release",
   definition(t) {
     t.int("id");
@@ -16,44 +18,85 @@ export const review = objectType({
     t.string("recorded");
     t.int("ratingCount");
     t.int("rating");
-    t.string("lanuage");
+    t.string("language");
+    t.string("recorded");
     t.list.string("genres");
     t.list.string("tracks");
+    t.string("cover");
   },
 });
 
-export const register = extendType({
+export const postRelease = extendType({
   type: "Mutation",
   definition: (t) => {
-    t.field("postReview", {
-      type: review,
+    t.field("postRelease", {
+      type: release,
       args: {
-        posterId: nonNull(intArg()),
-        releaseId: nonNull(intArg()),
+        artistId: nonNull(intArg()),
+        type: nonNull(stringArg()),
         title: nonNull(stringArg()),
-        description: nonNull(stringArg()),
-        rating: nonNull(intArg()),
+        recorded: nonNull(stringArg()),
+        language: nonNull(stringArg()),
+        genres: nonNull(list(stringArg())),
+        tracks: nonNull(list(stringArg())),
+        cover: nonNull(stringArg()),
       },
-      resolve: postReviewResolver,
+      resolve: postReleaseResolver,
     });
   },
 });
 
-export const getUsers = extendType({
+export const getAllReleases = extendType({
   type: "Query",
   definition: (t) => {
-    t.field("getReviews", {
-      type: list(review),
-      resolve: getAllReviewResolver,
+    t.field("getAllReleases", {
+      type: list(release),
+      resolve: getAllReleasesResolver,
     });
   },
 });
 
-export const getReview = extendType({
+export const getReleasebyId = extendType({
   type: "Query",
   definition: (t) => {
-    t.field("getReviewById", { type: review, resolve: getReviewByIdResolver });
+    t.field("getReleaseById", {
+      type: release,
+      args: { id: nonNull(intArg()) },
+      resolve: getReleaseByIdResolver,
+    });
   },
 });
 
-export * from "./review";
+export const deleteRelease = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("deleteRelease", {
+      type: release,
+      resolve: deleteReleaseResolver,
+    });
+  },
+});
+
+export const updateRelease = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("updateRelease", {
+      type: release,
+      args: {
+        id: nonNull(intArg()),
+        ratingCount: nonNull(intArg()),
+        rating: nonNull(intArg()),
+        type: nonNull(stringArg()),
+        title: nonNull(stringArg()),
+        recorded: nonNull(stringArg()),
+        language: nonNull(stringArg()),
+        genres: nonNull(list(stringArg())),
+        tracks: nonNull(list(stringArg())),
+        cover: nonNull(stringArg()),
+      },
+      resolve: updateReleaseResolver,
+    });
+  },
+});
+
+export * from "./release";

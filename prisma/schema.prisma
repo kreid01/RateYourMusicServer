@@ -38,19 +38,19 @@ model release {
   recorded    String
   rating      Int
   ratingCount Int
+  cover       String
   genres      String[]
-  descriptors String[]
   language    String
   tracks      String[]
   review      review[]
 }
 
 model artist {
-  id        Int       @id @default(autoincrement())
-  name      String
-  born      String
-  aliases   String
-  followers Int
-  genres    String[]
-  release   release[]
+  id             Int       @id @default(autoincrement())
+  name           String
+  born           String
+  type           String
+  relatedArtists String[]
+  genres         String[]
+  releases       release[]
 }

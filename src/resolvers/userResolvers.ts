@@ -1,4 +1,4 @@
-import { sendRefreshToken, createRefreshToken } from "../utils/auth";
+import { createRefreshToken } from "../utils/auth";
 import { compare, hash } from "bcryptjs";
 import { verify } from "jsonwebtoken";
 import { FieldResolver } from "nexus";
@@ -13,6 +13,13 @@ export const registerResolver: FieldResolver<"Mutation", "register"> = async (
 ) => {
   const { username, email, password } = args;
   const hashedPassword = await hash(password, 12);
+
+  if (
+    (await prisma.user.findFirst({ where: { username: username } })) ||
+    (await prisma.user.findFirst({ where: { email: email } }))
+  )
+    return false;
+
   try {
     const newUser = await prisma.user.create({
       data: {
@@ -49,14 +56,13 @@ export const loginResolver: FieldResolver<"Mutation", "login"> = async (
   }
 
   const valid = await compare(password, user.password);
-
   if (!valid) {
     return "bad password";
   }
-  sendRefreshToken(res, createRefreshToken(user));
 
   return {
     accessToken: createAccessToken(user),
+    refreshToken: createRefreshToken(user),
   };
 };
 
@@ -79,5 +85,17 @@ export const getUserResolver: FieldResolver<"Query", "getUser"> = async (
   } catch (err) {
     console.log(err);
     return null;
+  }
+};
+
+export const deleteUserResolver: FieldResolver<
+  "Mutation",
+  "deleteUser"
+> = async (_, args, __) => {
+  const { id } = args;
+  try {
+    await prisma.user.delete({ where: { id: id } });
+  } catch (ex: any) {
+    console.error(ex.Message);
   }
 };

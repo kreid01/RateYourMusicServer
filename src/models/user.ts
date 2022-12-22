@@ -3,6 +3,7 @@ import {
   getUsersResolver,
   loginResolver,
   getUserResolver,
+  deleteUserResolver,
 } from "../resolvers/userResolvers";
 import { extendType, list, nonNull, stringArg } from "nexus";
 import { objectType } from "nexus";
@@ -66,6 +67,13 @@ export const getUser = extendType({
   type: "Query",
   definition: (t) => {
     t.field("getUser", { type: user, resolve: getUserResolver });
+  },
+});
+
+export const deleteUser = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("deleteUser", { type: user, resolve: deleteUserResolver });
   },
 });
 
