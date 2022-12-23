@@ -61,6 +61,7 @@ export const loginResolver: FieldResolver<"Mutation", "login"> = async (
   }
 
   return {
+    user: user,
     accessToken: createAccessToken(user),
     refreshToken: createRefreshToken(user),
   };
@@ -85,6 +86,18 @@ export const getUserResolver: FieldResolver<"Query", "getUser"> = async (
   } catch (err) {
     console.log(err);
     return null;
+  }
+};
+
+export const getUserByIdResolver: FieldResolver<
+  "Query",
+  "getUserById"
+> = async (_, args, __) => {
+  const { id } = args;
+  try {
+    return await prisma.user.findFirstOrThrow({ where: { id: id } });
+  } catch (ex: any) {
+    return;
   }
 };
 

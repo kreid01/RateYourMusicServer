@@ -41,6 +41,7 @@ export const getReleaseByIdResolver: FieldResolver<
   "getReleaseById"
 > = async (_, args, __) => {
   const { id } = args;
+  console.log("run");
   try {
     return await prisma.release.findFirstOrThrow({ where: { id: id } });
   } catch (ex: any) {

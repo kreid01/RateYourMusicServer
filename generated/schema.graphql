@@ -4,6 +4,7 @@
 
 type LoginResponse {
   accessToken: String
+  refreshToken: String
 }
 
 type Mutation {
@@ -26,9 +27,11 @@ type Query {
   getAllReleases: [release]
   getArtistById(id: Int!): artist
   getReleaseById(id: Int!): release
+  getReleaseReviews(id: Int!): review
   getReviewById: review
   getReviews: [review]
   getUser: user
+  getUserById(id: Int!): user
   getUsers: [user]
   searchArtists(search: String!): [artist]
 }

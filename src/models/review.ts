@@ -55,6 +55,17 @@ export const getReviewById = extendType({
   },
 });
 
+export const getReleaseReviews = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("getReleaseReviews", {
+      args: { id: nonNull(intArg()) },
+      type: review,
+      resolve: getReviewByIdResolver,
+    });
+  },
+});
+
 export const deleteReview = extendType({
   type: "Mutation",
   definition: (t) => {

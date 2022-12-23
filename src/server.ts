@@ -13,6 +13,7 @@ import * as user from "./models/user";
 import * as release from "./models/release";
 import * as artist from "./models/artist";
 import { authController } from "./controllers/authController";
+import bodyParser from "body-parser";
 
 export const prisma = new PrismaClient();
 
@@ -26,9 +27,17 @@ const main = async () => {
   });
 
   const app = express();
+  app.use(bodyParser.json());
+  app.use(express.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+
   app.use(
     cors({
-      origin: ["http://localhost:80", "exp://192.168.0.120:19000"],
+      origin: [
+        "http://localhost:80",
+        "http://localhost:19006",
+        "exp://192.168.0.120:19000",
+      ],
       credentials: true,
     })
   );
@@ -49,6 +58,7 @@ const main = async () => {
         "http:localhost:80",
         "exp://192.168.0.120:19000",
         "https://studio.apollographql.com",
+        "http://localhost:19006",
       ],
     }),
     json(),

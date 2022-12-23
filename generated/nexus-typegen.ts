@@ -30,6 +30,7 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   LoginResponse: { // root type
     accessToken?: string | null; // String
+    refreshToken?: string | null; // String
   }
   Mutation: {};
   Query: {};
@@ -85,6 +86,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   LoginResponse: { // field return type
     accessToken: string | null; // String
+    refreshToken: string | null; // String
   }
   Mutation: { // field return type
     deleteArtist: NexusGenRootTypes['artist'] | null; // artist
@@ -105,9 +107,11 @@ export interface NexusGenFieldTypes {
     getAllReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
     getArtistById: NexusGenRootTypes['artist'] | null; // artist
     getReleaseById: NexusGenRootTypes['release'] | null; // release
+    getReleaseReviews: NexusGenRootTypes['review'] | null; // review
     getReviewById: NexusGenRootTypes['review'] | null; // review
     getReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getUser: NexusGenRootTypes['user'] | null; // user
+    getUserById: NexusGenRootTypes['user'] | null; // user
     getUsers: Array<NexusGenRootTypes['user'] | null> | null; // [user]
     searchArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
   }
@@ -153,6 +157,7 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   LoginResponse: { // field return type name
     accessToken: 'String'
+    refreshToken: 'String'
   }
   Mutation: { // field return type name
     deleteArtist: 'artist'
@@ -173,9 +178,11 @@ export interface NexusGenFieldTypeNames {
     getAllReleases: 'release'
     getArtistById: 'artist'
     getReleaseById: 'release'
+    getReleaseReviews: 'review'
     getReviewById: 'review'
     getReviews: 'review'
     getUser: 'user'
+    getUserById: 'user'
     getUsers: 'user'
     searchArtists: 'artist'
   }
@@ -281,6 +288,12 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     getReleaseById: { // args
+      id: number; // Int!
+    }
+    getReleaseReviews: { // args
+      id: number; // Int!
+    }
+    getUserById: { // args
       id: number; // Int!
     }
     searchArtists: { // args

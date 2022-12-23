@@ -7,9 +7,8 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 router.post("/", async (req: any, res: any) => {
-  const { token } = req.params;
+  const { token } = req.body;
 
-  console.log(token);
   if (!token) {
     return res.send({ ok: false, accessToken: "", refreshToken: "" });
   }

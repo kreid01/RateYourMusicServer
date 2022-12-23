@@ -14,7 +14,7 @@ export const postReviewResolver: FieldResolver<
         title,
         description,
         rating,
-        postDate: new Date(),
+        postDate: new Date().getDate().toString(),
       },
     });
     return newReview;
@@ -38,6 +38,18 @@ export const getReviewByIdResolver: FieldResolver<
   const { id } = args;
   try {
     return await prisma.review.findFirstOrThrow({ where: { id: id } });
+  } catch (ex: any) {
+    return;
+  }
+};
+
+export const getReleaseReviewsResolver: FieldResolver<
+  "Query",
+  "getReleaseReviews"
+> = async (_, args, __) => {
+  const { id } = args;
+  try {
+    return await prisma.review.findFirstOrThrow({ where: { releaseId: id } });
   } catch (ex: any) {
     return;
   }
