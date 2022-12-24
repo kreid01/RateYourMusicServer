@@ -26,10 +26,6 @@ router.post("/", async (req: any, res: any) => {
     return res.send({ ok: false, accessToken: "", refreshToken: "" });
   }
 
-  if (user.tokenVersion !== payload.tokenVersion) {
-    return res.send({ ok: false, accessToken: "", refreshToken: "" });
-  }
-
   return res.send({
     ok: true,
     accessToken: createAccessToken(user),

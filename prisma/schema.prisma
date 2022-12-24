@@ -8,12 +8,21 @@ datasource db {
 }
 
 model user {
-  id           Int      @id @default(autoincrement())
-  username     String
-  email        String
-  password     String
-  tokenVersion Int      @default(0)
-  reviews      review[]
+  id       Int        @id @default(autoincrement())
+  username String
+  email    String
+  password String
+  reviews  review[]
+  playlist playlist[]
+}
+
+model playlist {
+  id         Int       @id @default(autoincrement())
+  poster     user?     @relation(fields: [posterId], references: [id])
+  posterId   Int
+  title      String
+  content    release[]
+  contentIds Int[]
 }
 
 model review {
@@ -21,28 +30,28 @@ model review {
   posterId    Int
   releaseId   Int
   release     release? @relation(fields: [releaseId], references: [id])
-  postDate    DateTime
+  postDate    String
   title       String
   description String
-  rating      Int
-  user        user?    @relation(fields: [userId], references: [id])
-  userId      Int?
+  rating      Float
+  poster      user?    @relation(fields: [posterId], references: [id])
 }
 
 model release {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   type        String
   artistId    Int
-  artist      artist?  @relation(fields: [artistId], references: [id])
+  artist      artist?    @relation(fields: [artistId], references: [id])
   title       String
-  recorded    String
-  rating      Int
+  released    String
+  rating      Float
   ratingCount Int
   cover       String
   genres      String[]
   language    String
   tracks      String[]
   review      review[]
+  playlists   playlist[]
 }
 
 model artist {

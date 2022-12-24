@@ -3,6 +3,7 @@ import { objectType } from "nexus";
 import {
   deleteReviewResolver,
   getAllReviewResolver,
+  getReleaseReviewsResolver,
   getReviewByIdResolver,
   postReviewResolver,
   updateReviewResolver,
@@ -60,8 +61,8 @@ export const getReleaseReviews = extendType({
   definition: (t) => {
     t.field("getReleaseReviews", {
       args: { id: nonNull(intArg()) },
-      type: review,
-      resolve: getReviewByIdResolver,
+      type: list(review),
+      resolve: getReleaseReviewsResolver,
     });
   },
 });

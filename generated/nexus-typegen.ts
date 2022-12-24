@@ -48,9 +48,9 @@ export interface NexusGenObjects {
     genres?: Array<string | null> | null; // [String]
     id?: number | null; // Int
     language?: string | null; // String
-    rating?: number | null; // Int
+    rating?: number | null; // Float
     ratingCount?: number | null; // Int
-    recorded?: string | null; // String
+    released?: string | null; // String
     title?: string | null; // String
     tracks?: Array<string | null> | null; // [String]
     type?: string | null; // String
@@ -68,7 +68,6 @@ export interface NexusGenObjects {
     email?: string | null; // String
     id?: number | null; // Int
     password?: string | null; // String
-    tokenVersion?: number | null; // Int
     username?: string | null; // String
   }
 }
@@ -107,13 +106,14 @@ export interface NexusGenFieldTypes {
     getAllReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
     getArtistById: NexusGenRootTypes['artist'] | null; // artist
     getReleaseById: NexusGenRootTypes['release'] | null; // release
-    getReleaseReviews: NexusGenRootTypes['review'] | null; // review
+    getReleaseReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getReviewById: NexusGenRootTypes['review'] | null; // review
     getReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getUser: NexusGenRootTypes['user'] | null; // user
     getUserById: NexusGenRootTypes['user'] | null; // user
     getUsers: Array<NexusGenRootTypes['user'] | null> | null; // [user]
     searchArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
+    searchReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
   }
   artist: { // field return type
     born: string | null; // String
@@ -129,9 +129,9 @@ export interface NexusGenFieldTypes {
     genres: Array<string | null> | null; // [String]
     id: number | null; // Int
     language: string | null; // String
-    rating: number | null; // Int
+    rating: number | null; // Float
     ratingCount: number | null; // Int
-    recorded: string | null; // String
+    released: string | null; // String
     title: string | null; // String
     tracks: Array<string | null> | null; // [String]
     type: string | null; // String
@@ -149,7 +149,6 @@ export interface NexusGenFieldTypes {
     email: string | null; // String
     id: number | null; // Int
     password: string | null; // String
-    tokenVersion: number | null; // Int
     username: string | null; // String
   }
 }
@@ -185,6 +184,7 @@ export interface NexusGenFieldTypeNames {
     getUserById: 'user'
     getUsers: 'user'
     searchArtists: 'artist'
+    searchReleases: 'release'
   }
   artist: { // field return type name
     born: 'String'
@@ -200,9 +200,9 @@ export interface NexusGenFieldTypeNames {
     genres: 'String'
     id: 'Int'
     language: 'String'
-    rating: 'Int'
+    rating: 'Float'
     ratingCount: 'Int'
-    recorded: 'String'
+    released: 'String'
     title: 'String'
     tracks: 'String'
     type: 'String'
@@ -220,7 +220,6 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     id: 'Int'
     password: 'String'
-    tokenVersion: 'Int'
     username: 'String'
   }
 }
@@ -243,7 +242,7 @@ export interface NexusGenArgTypes {
       cover: string; // String!
       genres: Array<string | null>; // [String]!
       language: string; // String!
-      recorded: string; // String!
+      released: string; // String!
       title: string; // String!
       tracks: Array<string | null>; // [String]!
       type: string; // String!
@@ -270,9 +269,9 @@ export interface NexusGenArgTypes {
       genres: Array<string | null>; // [String]!
       id: number; // Int!
       language: string; // String!
-      rating: number; // Int!
+      rating: number; // Float!
       ratingCount: number; // Int!
-      recorded: string; // String!
+      released: string; // String!
       title: string; // String!
       tracks: Array<string | null>; // [String]!
       type: string; // String!
@@ -297,6 +296,9 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     searchArtists: { // args
+      search: string; // String!
+    }
+    searchReleases: { // args
       search: string; // String!
     }
   }

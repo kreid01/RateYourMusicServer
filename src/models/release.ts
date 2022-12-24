@@ -1,10 +1,11 @@
-import { extendType, intArg, list, nonNull, stringArg } from "nexus";
+import { extendType, floatArg, intArg, list, nonNull, stringArg } from "nexus";
 import { objectType } from "nexus";
 import {
   deleteReleaseResolver,
   getAllReleasesResolver,
   getReleaseByIdResolver,
   postReleaseResolver,
+  searchReleasesResolver,
   updateReleaseResolver,
 } from "../resolvers/releaseResolver";
 
@@ -15,11 +16,10 @@ export const release = objectType({
     t.string("type");
     t.int("artistId");
     t.string("title");
-    t.string("recorded");
     t.int("ratingCount");
-    t.int("rating");
+    t.float("rating");
     t.string("language");
-    t.string("recorded");
+    t.string("released");
     t.list.string("genres");
     t.list.string("tracks");
     t.string("cover");
@@ -35,7 +35,7 @@ export const postRelease = extendType({
         artistId: nonNull(intArg()),
         type: nonNull(stringArg()),
         title: nonNull(stringArg()),
-        recorded: nonNull(stringArg()),
+        released: nonNull(stringArg()),
         language: nonNull(stringArg()),
         genres: nonNull(list(stringArg())),
         tracks: nonNull(list(stringArg())),
@@ -67,6 +67,17 @@ export const getReleasebyId = extendType({
   },
 });
 
+export const searchReleases = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("searchReleases", {
+      type: list(release),
+      args: { search: nonNull(stringArg()) },
+      resolve: searchReleasesResolver,
+    });
+  },
+});
+
 export const deleteRelease = extendType({
   type: "Mutation",
   definition: (t) => {
@@ -85,10 +96,10 @@ export const updateRelease = extendType({
       args: {
         id: nonNull(intArg()),
         ratingCount: nonNull(intArg()),
-        rating: nonNull(intArg()),
+        rating: nonNull(floatArg()),
         type: nonNull(stringArg()),
         title: nonNull(stringArg()),
-        recorded: nonNull(stringArg()),
+        released: nonNull(stringArg()),
         language: nonNull(stringArg()),
         genres: nonNull(list(stringArg())),
         tracks: nonNull(list(stringArg())),

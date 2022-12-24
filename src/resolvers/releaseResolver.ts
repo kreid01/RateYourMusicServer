@@ -5,7 +5,7 @@ export const postReleaseResolver: FieldResolver<
   "Mutation",
   "postRelease"
 > = async (_, args, __) => {
-  const { cover, artistId, type, title, language, tracks, genres, recorded } =
+  const { cover, artistId, type, title, language, tracks, genres, released } =
     args;
   try {
     const newRelease = await prisma.release.create({
@@ -19,7 +19,7 @@ export const postReleaseResolver: FieldResolver<
         genres,
         tracks,
         cover,
-        recorded,
+        released,
       },
     });
     return newRelease;
@@ -41,7 +41,6 @@ export const getReleaseByIdResolver: FieldResolver<
   "getReleaseById"
 > = async (_, args, __) => {
   const { id } = args;
-  console.log("run");
   try {
     return await prisma.release.findFirstOrThrow({ where: { id: id } });
   } catch (ex: any) {
@@ -61,6 +60,23 @@ export const deleteReleaseResolver: FieldResolver<
   }
 };
 
+export const searchReleasesResolver: FieldResolver<
+  "Query",
+  "searchReleases"
+> = async (_, args, __) => {
+  const { search } = args;
+  try {
+    const releases = await prisma.release.findMany();
+    return await releases
+      .filter((release) =>
+        release.title.toLowerCase().includes(search.toLowerCase())
+      )
+      .splice(0, 5);
+  } catch (err: any) {
+    console.log(err);
+  }
+};
+
 export const updateReleaseResolver: FieldResolver<
   "Mutation",
   "updateReviewById"
@@ -75,7 +91,7 @@ export const updateReleaseResolver: FieldResolver<
     genres,
     tracks,
     cover,
-    recorded,
+    released,
   } = args;
   try {
     await prisma.release.update({
@@ -89,7 +105,7 @@ export const updateReleaseResolver: FieldResolver<
         genres,
         tracks,
         cover,
-        recorded,
+        released,
       },
     });
   } catch (ex: any) {

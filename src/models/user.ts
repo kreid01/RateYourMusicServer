@@ -16,7 +16,6 @@ export const user = objectType({
     t.string("username");
     t.string("email");
     t.string("password");
-    t.int("tokenVersion");
   },
 });
 

@@ -6,6 +6,19 @@ export const postReviewResolver: FieldResolver<
   "postReview"
 > = async (_, args, __) => {
   const { posterId, releaseId, title, description, rating } = args;
+
+  const reviews = await prisma.review.findMany({
+    where: { releaseId: releaseId },
+  });
+  const ratingCount = reviews.length + 1;
+  const average =
+    ((await reviews.reduce((acc, review) => {
+      console.log(review.rating);
+      return acc + review.rating;
+    }, 0)) +
+      rating) /
+    (reviews.length + 1);
+
   try {
     const newReview = await prisma.review.create({
       data: {
@@ -14,8 +27,12 @@ export const postReviewResolver: FieldResolver<
         title,
         description,
         rating,
-        postDate: new Date().getDate().toString(),
+        postDate: new Date().getTime().toString(),
       },
+    });
+    await prisma.release.update({
+      where: { id: releaseId },
+      data: { rating: average, ratingCount: ratingCount },
     });
     return newReview;
   } catch (err) {
@@ -49,7 +66,7 @@ export const getReleaseReviewsResolver: FieldResolver<
 > = async (_, args, __) => {
   const { id } = args;
   try {
-    return await prisma.review.findFirstOrThrow({ where: { releaseId: id } });
+    return await prisma.review.findMany({ where: { releaseId: id } });
   } catch (ex: any) {
     return;
   }

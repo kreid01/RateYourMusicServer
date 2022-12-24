@@ -14,11 +14,11 @@ type Mutation {
   deleteUser: user
   login(email: String!, password: String!): LoginResponse
   postArtist(born: String!, genres: [String]!, name: String!, relatedArtists: [String]!, type: String!): artist
-  postRelease(artistId: Int!, cover: String!, genres: [String]!, language: String!, recorded: String!, title: String!, tracks: [String]!, type: String!): release
+  postRelease(artistId: Int!, cover: String!, genres: [String]!, language: String!, released: String!, title: String!, tracks: [String]!, type: String!): release
   postReview(description: String!, posterId: Int!, rating: Int!, releaseId: Int!, title: String!): review
   register(email: String!, password: String!, username: String!): user
   updateArtist(genres: [String]!, name: String!, relatedArtists: [String]!): artist
-  updateRelease(cover: String!, genres: [String]!, id: Int!, language: String!, rating: Int!, ratingCount: Int!, recorded: String!, title: String!, tracks: [String]!, type: String!): release
+  updateRelease(cover: String!, genres: [String]!, id: Int!, language: String!, rating: Float!, ratingCount: Int!, released: String!, title: String!, tracks: [String]!, type: String!): release
   updateReview(description: String!, rating: Int!, title: String!): review
 }
 
@@ -27,13 +27,14 @@ type Query {
   getAllReleases: [release]
   getArtistById(id: Int!): artist
   getReleaseById(id: Int!): release
-  getReleaseReviews(id: Int!): review
+  getReleaseReviews(id: Int!): [review]
   getReviewById: review
   getReviews: [review]
   getUser: user
   getUserById(id: Int!): user
   getUsers: [user]
   searchArtists(search: String!): [artist]
+  searchReleases(search: String!): [release]
 }
 
 type artist {
@@ -51,9 +52,9 @@ type release {
   genres: [String]
   id: Int
   language: String
-  rating: Int
+  rating: Float
   ratingCount: Int
-  recorded: String
+  released: String
   title: String
   tracks: [String]
   type: String
@@ -73,6 +74,5 @@ type user {
   email: String
   id: Int
   password: String
-  tokenVersion: Int
   username: String
 }
