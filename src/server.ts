@@ -13,6 +13,7 @@ import * as user from "./models/user";
 import * as release from "./models/release";
 import * as artist from "./models/artist";
 import { authController } from "./controllers/authController";
+import { fileController } from "./controllers/fileController";
 import bodyParser from "body-parser";
 
 export const prisma = new PrismaClient();
@@ -29,7 +30,7 @@ const main = async () => {
   const app = express();
   app.use(bodyParser.json());
   app.use(express.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.urlencoded({ extended: false }));
 
   app.use(
     cors({
@@ -68,6 +69,7 @@ const main = async () => {
   );
 
   app.use("/auth", authController);
+  app.use("/file", fileController);
 
   await new Promise<void>((resolve) => {
     httpServer.listen({ port: 80 });
