@@ -4,22 +4,109 @@
 
 type LoginResponse {
   accessToken: String
+  refreshToken: String
 }
 
 type Mutation {
+  deleteArtist: artist
+  deleteChannel: channel
+  deleteMessage(id: Int!): message
+  deletePlaylist(id: Int!): playlist
+  deleteRelease: release
+  deleteReview: review
+  deleteUser: user
   login(email: String!, password: String!): LoginResponse
+  postArtist(born: String!, genres: [String]!, name: String!, relatedArtists: [String]!, type: String!): artist
+  postChannel(releaseId: Int!, title: String!): channel
+  postMessage(channelId: Int!, content: String!, posterId: Int!): message
+  postPlaylist(contentIds: [Int!], posterId: Int!, title: String!): playlist
+  postRelease(artistId: Int!, cover: String!, genres: [String]!, language: String!, released: String!, title: String!, tracks: [String]!, type: String!): release
+  postReview(description: String!, posterId: Int!, rating: Int!, releaseId: Int!, title: String!): review
   register(email: String!, password: String!, username: String!): user
+  updateArtist(genres: [String]!, name: String!, relatedArtists: [String]!): artist
+  updateChannel(open: [Boolean]!): channel
+  updateRelease(cover: String!, genres: [String]!, id: Int!, language: String!, rating: Float!, ratingCount: Int!, released: String!, title: String!, tracks: [String]!, type: String!): release
+  updateReview(description: String!, rating: Int!, title: String!): review
 }
 
 type Query {
+  getAllArtists: [artist]
+  getAllChannels: [channel]
+  getAllReleases: [release]
+  getArtistById(id: Int!): artist
+  getChannelById(id: Int!): channel
+  getChatMessages(id: Int!): [message]
+  getMessageById(id: Int!): message
+  getPlaylistById(id: Int!): playlist
+  getReleaseById(id: Int!): release
+  getReleaseReviews(id: Int!): [review]
+  getReviewById: review
+  getReviews: [review]
   getUser: user
+  getUserById(id: Int!): user
+  getUserPlaylists(id: Int!): [playlist]
   getUsers: [user]
+  searchArtists(search: String!): [artist]
+  searchReleases(search: String!): [release]
+}
+
+type artist {
+  born: String
+  genres: [String]
+  id: Int
+  name: String
+  relatedArtists: [String]
+  type: String
+}
+
+type channel {
+  id: Int
+  releaseId: Int
+  title: String
+}
+
+type message {
+  channelId: Int
+  content: String
+  id: Int
+  postDate: String
+  posterId: Int
+}
+
+type playlist {
+  contentIds: [Int]
+  id: Int
+  posterId: Int
+  title: String
+}
+
+type release {
+  artistId: Int
+  cover: String
+  genres: [String]
+  id: Int
+  language: String
+  rating: Float
+  ratingCount: Int
+  released: String
+  title: String
+  tracks: [String]
+  type: String
+}
+
+type review {
+  description: String
+  id: Int
+  postDate: String
+  posterId: Int
+  rating: Int
+  releaseId: Int
+  title: String
 }
 
 type user {
   email: String
   id: Int
   password: String
-  tokenVersion: Int
   username: String
 }

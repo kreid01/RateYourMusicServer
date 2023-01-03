@@ -3,8 +3,10 @@ import {
   getUsersResolver,
   loginResolver,
   getUserResolver,
+  deleteUserResolver,
+  getUserByIdResolver,
 } from "../resolvers/userResolvers";
-import { extendType, list, nonNull, stringArg } from "nexus";
+import { extendType, intArg, list, nonNull, stringArg } from "nexus";
 import { objectType } from "nexus";
 
 export const user = objectType({
@@ -14,7 +16,6 @@ export const user = objectType({
     t.string("username");
     t.string("email");
     t.string("password");
-    t.int("tokenVersion");
   },
 });
 
@@ -22,7 +23,7 @@ export const LoginResponse = objectType({
   name: "LoginResponse",
   definition(t) {
     t.string("accessToken");
-    user;
+    t.string("refreshToken");
   },
 });
 
@@ -66,6 +67,24 @@ export const getUser = extendType({
   type: "Query",
   definition: (t) => {
     t.field("getUser", { type: user, resolve: getUserResolver });
+  },
+});
+
+export const getUserById = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("getUserById", {
+      args: { id: nonNull(intArg()) },
+      type: user,
+      resolve: getUserByIdResolver,
+    });
+  },
+});
+
+export const deleteUser = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("deleteUser", { type: user, resolve: deleteUserResolver });
   },
 });
 
