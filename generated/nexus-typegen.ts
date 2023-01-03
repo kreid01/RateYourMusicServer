@@ -34,6 +34,7 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  Subscription: {};
   artist: { // root type
     born?: string | null; // String
     genres?: Array<string | null> | null; // [String]
@@ -41,6 +42,18 @@ export interface NexusGenObjects {
     name?: string | null; // String
     relatedArtists?: Array<string | null> | null; // [String]
     type?: string | null; // String
+  }
+  channel: { // root type
+    id?: number | null; // Int
+    releaseId?: number | null; // Int
+    title?: string | null; // String
+  }
+  message: { // root type
+    channelId?: number | null; // Int
+    content?: string | null; // String
+    id?: number | null; // Int
+    postDate?: string | null; // String
+    posterId?: number | null; // Int
   }
   release: { // root type
     artistId?: number | null; // Int
@@ -89,22 +102,30 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     deleteArtist: NexusGenRootTypes['artist'] | null; // artist
+    deleteChannel: NexusGenRootTypes['channel'] | null; // channel
     deleteRelease: NexusGenRootTypes['release'] | null; // release
     deleteReview: NexusGenRootTypes['review'] | null; // review
     deleteUser: NexusGenRootTypes['user'] | null; // user
+    deletemessage: NexusGenRootTypes['message'] | null; // message
     login: NexusGenRootTypes['LoginResponse'] | null; // LoginResponse
     postArtist: NexusGenRootTypes['artist'] | null; // artist
+    postChannel: NexusGenRootTypes['channel'] | null; // channel
+    postMessage: NexusGenRootTypes['message'] | null; // message
     postRelease: NexusGenRootTypes['release'] | null; // release
     postReview: NexusGenRootTypes['review'] | null; // review
     register: NexusGenRootTypes['user'] | null; // user
     updateArtist: NexusGenRootTypes['artist'] | null; // artist
+    updateChannel: NexusGenRootTypes['channel'] | null; // channel
     updateRelease: NexusGenRootTypes['release'] | null; // release
     updateReview: NexusGenRootTypes['review'] | null; // review
   }
   Query: { // field return type
     getAllArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
+    getAllChannels: Array<NexusGenRootTypes['channel'] | null> | null; // [channel]
     getAllReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
     getArtistById: NexusGenRootTypes['artist'] | null; // artist
+    getChannelById: NexusGenRootTypes['channel'] | null; // channel
+    getChatMessages: Array<NexusGenRootTypes['message'] | null> | null; // [message]
     getReleaseById: NexusGenRootTypes['release'] | null; // release
     getReleaseReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getReviewById: NexusGenRootTypes['review'] | null; // review
@@ -112,8 +133,12 @@ export interface NexusGenFieldTypes {
     getUser: NexusGenRootTypes['user'] | null; // user
     getUserById: NexusGenRootTypes['user'] | null; // user
     getUsers: Array<NexusGenRootTypes['user'] | null> | null; // [user]
+    getmessageById: NexusGenRootTypes['message'] | null; // message
     searchArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
     searchReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
+  }
+  Subscription: { // field return type
+    newMessage: NexusGenRootTypes['message'] | null; // message
   }
   artist: { // field return type
     born: string | null; // String
@@ -122,6 +147,18 @@ export interface NexusGenFieldTypes {
     name: string | null; // String
     relatedArtists: Array<string | null> | null; // [String]
     type: string | null; // String
+  }
+  channel: { // field return type
+    id: number | null; // Int
+    releaseId: number | null; // Int
+    title: string | null; // String
+  }
+  message: { // field return type
+    channelId: number | null; // Int
+    content: string | null; // String
+    id: number | null; // Int
+    postDate: string | null; // String
+    posterId: number | null; // Int
   }
   release: { // field return type
     artistId: number | null; // Int
@@ -160,22 +197,30 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     deleteArtist: 'artist'
+    deleteChannel: 'channel'
     deleteRelease: 'release'
     deleteReview: 'review'
     deleteUser: 'user'
+    deletemessage: 'message'
     login: 'LoginResponse'
     postArtist: 'artist'
+    postChannel: 'channel'
+    postMessage: 'message'
     postRelease: 'release'
     postReview: 'review'
     register: 'user'
     updateArtist: 'artist'
+    updateChannel: 'channel'
     updateRelease: 'release'
     updateReview: 'review'
   }
   Query: { // field return type name
     getAllArtists: 'artist'
+    getAllChannels: 'channel'
     getAllReleases: 'release'
     getArtistById: 'artist'
+    getChannelById: 'channel'
+    getChatMessages: 'message'
     getReleaseById: 'release'
     getReleaseReviews: 'review'
     getReviewById: 'review'
@@ -183,8 +228,12 @@ export interface NexusGenFieldTypeNames {
     getUser: 'user'
     getUserById: 'user'
     getUsers: 'user'
+    getmessageById: 'message'
     searchArtists: 'artist'
     searchReleases: 'release'
+  }
+  Subscription: { // field return type name
+    newMessage: 'message'
   }
   artist: { // field return type name
     born: 'String'
@@ -193,6 +242,18 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     relatedArtists: 'String'
     type: 'String'
+  }
+  channel: { // field return type name
+    id: 'Int'
+    releaseId: 'Int'
+    title: 'String'
+  }
+  message: { // field return type name
+    channelId: 'Int'
+    content: 'String'
+    id: 'Int'
+    postDate: 'String'
+    posterId: 'Int'
   }
   release: { // field return type name
     artistId: 'Int'
@@ -237,6 +298,15 @@ export interface NexusGenArgTypes {
       relatedArtists: Array<string | null>; // [String]!
       type: string; // String!
     }
+    postChannel: { // args
+      releaseId: number; // Int!
+      title: string; // String!
+    }
+    postMessage: { // args
+      channelId: number; // Int!
+      content: string; // String!
+      posterId: number; // Int!
+    }
     postRelease: { // args
       artistId: number; // Int!
       cover: string; // String!
@@ -264,6 +334,9 @@ export interface NexusGenArgTypes {
       name: string; // String!
       relatedArtists: Array<string | null>; // [String]!
     }
+    updateChannel: { // args
+      open: Array<boolean | null>; // [Boolean]!
+    }
     updateRelease: { // args
       cover: string; // String!
       genres: Array<string | null>; // [String]!
@@ -286,6 +359,12 @@ export interface NexusGenArgTypes {
     getArtistById: { // args
       id: number; // Int!
     }
+    getChannelById: { // args
+      id: number; // Int!
+    }
+    getChatMessages: { // args
+      id: number; // Int!
+    }
     getReleaseById: { // args
       id: number; // Int!
     }
@@ -295,11 +374,19 @@ export interface NexusGenArgTypes {
     getUserById: { // args
       id: number; // Int!
     }
+    getmessageById: { // args
+      id: number; // Int!
+    }
     searchArtists: { // args
       search: string; // String!
     }
     searchReleases: { // args
       search: string; // String!
+    }
+  }
+  Subscription: {
+    newMessage: { // args
+      channelId: number; // Int!
     }
   }
 }

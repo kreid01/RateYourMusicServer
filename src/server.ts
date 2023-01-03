@@ -12,15 +12,19 @@ import * as review from "./models/review";
 import * as user from "./models/user";
 import * as release from "./models/release";
 import * as artist from "./models/artist";
+import * as channel from "./models/channel";
+import * as message from "./models/message";
 import { authController } from "./controllers/authController";
 import { fileController } from "./controllers/fileController";
 import bodyParser from "body-parser";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
 
 export const prisma = new PrismaClient();
 
 const main = async () => {
   const schema = makeSchema({
-    types: [user, review, release, artist],
+    types: [user, review, release, artist, message, channel],
     outputs: {
       typegen: join(__dirname, "../generated/nexus-typegen.ts"),
       schema: join(__dirname, "../generated/schema.graphql"),
@@ -49,6 +53,13 @@ const main = async () => {
     schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
+
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/graphql",
+  });
+
+  const serverCleanup = useServer({ schema }, wsServer);
 
   await server.start();
 

@@ -1,9 +1,3 @@
-import {
-  registerResolver,
-  getUsersResolver,
-  loginResolver,
-  getUserResolver,
-} from "../resolvers/userResolvers";
 import { extendType, intArg, list, nonNull, stringArg } from "nexus";
 import { objectType } from "nexus";
 import {
@@ -97,4 +91,4 @@ export const deleteArtist = extendType({
     t.field("deleteArtist", { type: artist, resolve: deleteArtistResolver });
   },
 });
-export * from "./user";
+export * from "./artist";

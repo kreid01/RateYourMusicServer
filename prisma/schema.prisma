@@ -14,6 +14,7 @@ model user {
   password String
   reviews  review[]
   playlist playlist[]
+  message  message[]
 }
 
 model playlist {
@@ -23,6 +24,25 @@ model playlist {
   title      String
   content    release[]
   contentIds Int[]
+}
+
+model channel {
+  id        Int       @id @default(autoincrement())
+  release   release?  @relation(fields: [releaseId], references: [id])
+  releaseId Int
+  title     String
+  open      Boolean
+  message   message[]
+}
+
+model message {
+  id        Int      @id @default(autoincrement())
+  channel   channel? @relation(fields: [channelId], references: [id])
+  channelId Int
+  poster    user?    @relation(fields: [posterId], references: [id])
+  posterId  Int
+  content   String
+  postDate  String
 }
 
 model review {
@@ -52,6 +72,7 @@ model release {
   tracks      String[]
   review      review[]
   playlists   playlist[]
+  channel     channel[]
 }
 
 model artist {
