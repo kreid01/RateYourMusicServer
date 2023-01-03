@@ -1,30 +1,37 @@
 import { FieldResolver } from "nexus";
 import { prisma } from "../server";
+import { isAuth } from "../utils/auth";
 
 export const postReleaseResolver: FieldResolver<
   "Mutation",
   "postRelease"
-> = async (_, args, __) => {
+> = async (_, args, { req, res }) => {
   const { cover, artistId, type, title, language, tracks, genres, released } =
     args;
-  try {
-    const newRelease = await prisma.release.create({
-      data: {
-        artistId,
-        type,
-        title,
-        rating: 0,
-        ratingCount: 0,
-        language,
-        genres,
-        tracks,
-        cover,
-        released,
-      },
-    });
-    return newRelease;
-  } catch (err) {
-    console.log(err);
+
+  const auth = isAuth(req);
+  if (auth) {
+    try {
+      const newRelease = await prisma.release.create({
+        data: {
+          artistId,
+          type,
+          title,
+          rating: 0,
+          ratingCount: 0,
+          language,
+          genres,
+          tracks,
+          cover,
+          released,
+        },
+      });
+      return newRelease;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  } else {
     return false;
   }
 };

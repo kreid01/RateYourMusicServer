@@ -1,4 +1,4 @@
-import { createRefreshToken } from "../utils/auth";
+import { createRefreshToken, isAuth } from "../utils/auth";
 import { compare, hash } from "bcryptjs";
 import { verify } from "jsonwebtoken";
 import { FieldResolver } from "nexus";
@@ -104,11 +104,18 @@ export const getUserByIdResolver: FieldResolver<
 export const deleteUserResolver: FieldResolver<
   "Mutation",
   "deleteUser"
-> = async (_, args, __) => {
+> = async (_, args, { req }) => {
   const { id } = args;
-  try {
-    await prisma.user.delete({ where: { id: id } });
-  } catch (ex: any) {
-    console.error(ex.Message);
+
+  const auth = isAuth(req);
+
+  if (auth) {
+    try {
+      await prisma.user.delete({ where: { id: id } });
+    } catch (ex: any) {
+      console.error(ex.Message);
+    }
+  } else {
+    return false;
   }
 };

@@ -9,8 +9,8 @@ export interface MyContext {
   payload?: { userId: string };
 }
 
-export const isAuth = ({ context }: any, next: any) => {
-  const authorization = context.req.headers["authorization"];
+export const isAuth = (req: any) => {
+  const authorization = req.headers["authorization"];
 
   if (!authorization) {
     throw new Error("not authenticated");
@@ -18,14 +18,11 @@ export const isAuth = ({ context }: any, next: any) => {
 
   try {
     const token = authorization.split(" ")[1];
-    const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-    context.payload = payload as any;
+    if (verify(token, process.env.ACCESS_TOKEN_SECRET!)) return true;
   } catch (err) {
     console.log(err);
-    throw new Error("not authenticated");
+    return false;
   }
-
-  return next();
 };
 
 export const createAccessToken = (user: user) => {

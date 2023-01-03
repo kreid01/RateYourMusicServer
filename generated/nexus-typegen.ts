@@ -34,7 +34,6 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
-  Subscription: {};
   artist: { // root type
     born?: string | null; // String
     genres?: Array<string | null> | null; // [String]
@@ -103,10 +102,10 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     deleteArtist: NexusGenRootTypes['artist'] | null; // artist
     deleteChannel: NexusGenRootTypes['channel'] | null; // channel
+    deleteMessage: NexusGenRootTypes['message'] | null; // message
     deleteRelease: NexusGenRootTypes['release'] | null; // release
     deleteReview: NexusGenRootTypes['review'] | null; // review
     deleteUser: NexusGenRootTypes['user'] | null; // user
-    deletemessage: NexusGenRootTypes['message'] | null; // message
     login: NexusGenRootTypes['LoginResponse'] | null; // LoginResponse
     postArtist: NexusGenRootTypes['artist'] | null; // artist
     postChannel: NexusGenRootTypes['channel'] | null; // channel
@@ -136,9 +135,6 @@ export interface NexusGenFieldTypes {
     getmessageById: NexusGenRootTypes['message'] | null; // message
     searchArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
     searchReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
-  }
-  Subscription: { // field return type
-    newMessage: NexusGenRootTypes['message'] | null; // message
   }
   artist: { // field return type
     born: string | null; // String
@@ -198,10 +194,10 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     deleteArtist: 'artist'
     deleteChannel: 'channel'
+    deleteMessage: 'message'
     deleteRelease: 'release'
     deleteReview: 'review'
     deleteUser: 'user'
-    deletemessage: 'message'
     login: 'LoginResponse'
     postArtist: 'artist'
     postChannel: 'channel'
@@ -231,9 +227,6 @@ export interface NexusGenFieldTypeNames {
     getmessageById: 'message'
     searchArtists: 'artist'
     searchReleases: 'release'
-  }
-  Subscription: { // field return type name
-    newMessage: 'message'
   }
   artist: { // field return type name
     born: 'String'
@@ -287,6 +280,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    deleteMessage: { // args
+      id: number; // Int!
+    }
     login: { // args
       email: string; // String!
       password: string; // String!
@@ -382,11 +378,6 @@ export interface NexusGenArgTypes {
     }
     searchReleases: { // args
       search: string; // String!
-    }
-  }
-  Subscription: {
-    newMessage: { // args
-      channelId: number; // Int!
     }
   }
 }

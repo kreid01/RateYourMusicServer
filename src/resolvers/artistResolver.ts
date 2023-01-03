@@ -1,24 +1,30 @@
 import { FieldResolver } from "nexus";
 import { prisma } from "../server";
+import { isAuth } from "../utils/auth";
 
 export const postArtistResolver: FieldResolver<
   "Mutation",
   "postArtist"
-> = async (_, args, __) => {
+> = async (_, args, { req }) => {
   const { name, born, relatedArtists, genres, type } = args;
-  try {
-    const newArtist = await prisma.artist.create({
-      data: {
-        name,
-        born,
-        relatedArtists,
-        genres,
-        type,
-      },
-    });
-    return newArtist;
-  } catch (err) {
-    console.log(err);
+  const auth = isAuth(req);
+  if (auth) {
+    try {
+      const newArtist = await prisma.artist.create({
+        data: {
+          name,
+          born,
+          relatedArtists,
+          genres,
+          type,
+        },
+      });
+      return newArtist;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  } else {
     return false;
   }
 };

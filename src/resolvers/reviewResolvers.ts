@@ -1,42 +1,48 @@
 import { FieldResolver } from "nexus";
 import { prisma } from "../server";
+import { isAuth } from "../utils/auth";
 
 export const postReviewResolver: FieldResolver<
   "Mutation",
   "postReview"
-> = async (_, args, __) => {
+> = async (_, args, { req }) => {
   const { posterId, releaseId, title, description, rating } = args;
 
-  const reviews = await prisma.review.findMany({
-    where: { releaseId: releaseId },
-  });
-  const ratingCount = reviews.length + 1;
-  const average =
-    ((await reviews.reduce((acc, review) => {
-      console.log(review.rating);
-      return acc + review.rating;
-    }, 0)) +
-      rating) /
-    (reviews.length + 1);
+  const auth = isAuth(req);
+  if (auth) {
+    const reviews = await prisma.review.findMany({
+      where: { releaseId: releaseId },
+    });
+    const ratingCount = reviews.length + 1;
+    const average =
+      ((await reviews.reduce((acc, review) => {
+        console.log(review.rating);
+        return acc + review.rating;
+      }, 0)) +
+        rating) /
+      (reviews.length + 1);
 
-  try {
-    const newReview = await prisma.review.create({
-      data: {
-        posterId,
-        releaseId,
-        title,
-        description,
-        rating,
-        postDate: new Date().getTime().toString(),
-      },
-    });
-    await prisma.release.update({
-      where: { id: releaseId },
-      data: { rating: average, ratingCount: ratingCount },
-    });
-    return newReview;
-  } catch (err) {
-    console.log(err);
+    try {
+      const newReview = await prisma.review.create({
+        data: {
+          posterId,
+          releaseId,
+          title,
+          description,
+          rating,
+          postDate: new Date().getTime().toString(),
+        },
+      });
+      await prisma.release.update({
+        where: { id: releaseId },
+        data: { rating: average, ratingCount: ratingCount },
+      });
+      return newReview;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  } else {
     return false;
   }
 };
@@ -75,30 +81,41 @@ export const getReleaseReviewsResolver: FieldResolver<
 export const deleteReviewResolver: FieldResolver<
   "Mutation",
   "deleteReview"
-> = async (_, args, __) => {
+> = async (_, args, { req }) => {
   const { id } = args;
-  try {
-    await prisma.review.delete({ where: { id: id } });
-  } catch (ex: any) {
-    console.error(ex.Message);
+  const auth = isAuth(req);
+  if (auth) {
+    try {
+      await prisma.review.delete({ where: { id: id } });
+    } catch (ex: any) {
+      console.error(ex.Message);
+    }
+  } else {
+    return false;
   }
 };
 
 export const updateReviewResolver: FieldResolver<
   "Mutation",
   "updateReviewById"
-> = async (_, args, __) => {
+> = async (_, args, { req }) => {
   const { id, title, description, rating } = args;
-  try {
-    await prisma.review.update({
-      where: { id: id },
-      data: {
-        title,
-        description,
-        rating,
-      },
-    });
-  } catch (ex: any) {
-    console.error(ex.Message);
+
+  const auth = isAuth(req);
+  if (auth) {
+    try {
+      await prisma.review.update({
+        where: { id: id },
+        data: {
+          title,
+          description,
+          rating,
+        },
+      });
+    } catch (ex: any) {
+      console.error(ex.Message);
+    }
+  } else {
+    return false;
   }
 };

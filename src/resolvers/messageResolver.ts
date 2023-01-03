@@ -1,24 +1,31 @@
 import { FieldResolver } from "nexus";
 import { prisma } from "../server";
+import { isAuth } from "../utils/auth";
 
 export const postMessageResolver: FieldResolver<
   "Mutation",
   "postMessage"
-> = async (_, args, __) => {
+> = async (_, args, { req }) => {
   const { channelId, posterId, content } = args;
 
-  try {
-    const newMessage = await prisma.message.create({
-      data: {
-        channelId,
-        posterId,
-        content,
-        postDate: new Date(Date.now()).toString(),
-      },
-    });
-    return newMessage;
-  } catch (err) {
-    console.log(err);
+  const auth = isAuth(req);
+
+  if (auth) {
+    try {
+      const newMessage = await prisma.message.create({
+        data: {
+          channelId,
+          posterId,
+          content,
+          postDate: new Date(Date.now()).toString(),
+        },
+      });
+      return newMessage;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  } else {
     return false;
   }
 };
@@ -46,11 +53,18 @@ export const getMessageByIdResolver: FieldResolver<
 export const deleteMessageResolver: FieldResolver<
   "Mutation",
   "deleteMessage"
-> = async (_, args, __) => {
+> = async (_, args, { req }) => {
   const { id } = args;
-  try {
-    await prisma.message.delete({ where: { id: id } });
-  } catch (err: any) {
-    console.error(err.Message);
+
+  const auth = isAuth(req);
+  console.log(auth);
+  if (auth) {
+    try {
+      await prisma.message.delete({ where: { id: id } });
+    } catch (err: any) {
+      console.error(err.Message);
+    }
+  } else {
+    return false;
   }
 };

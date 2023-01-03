@@ -10,10 +10,10 @@ type LoginResponse {
 type Mutation {
   deleteArtist: artist
   deleteChannel: channel
+  deleteMessage(id: Int!): message
   deleteRelease: release
   deleteReview: review
   deleteUser: user
-  deletemessage: message
   login(email: String!, password: String!): LoginResponse
   postArtist(born: String!, genres: [String]!, name: String!, relatedArtists: [String]!, type: String!): artist
   postChannel(releaseId: Int!, title: String!): channel
@@ -44,14 +44,6 @@ type Query {
   getmessageById(id: Int!): message
   searchArtists(search: String!): [artist]
   searchReleases(search: String!): [release]
-}
-
-type Subscription {
-  """Fires anytime a new message is posted for a particular chat"""
-  newMessage(
-    """Id of the channel"""
-    channelId: Int!
-  ): message
 }
 
 type artist {

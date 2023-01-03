@@ -4,16 +4,8 @@ import {
   getMessageByIdResolver,
   postMessageResolver,
 } from "./../resolvers/messageResolver";
-import {
-  extendType,
-  intArg,
-  list,
-  nonNull,
-  stringArg,
-  subscriptionField,
-} from "nexus";
+import { extendType, intArg, list, nonNull, stringArg } from "nexus";
 import { objectType } from "nexus";
-import { prisma } from "../server";
 
 export const message = objectType({
   name: "message",
@@ -24,27 +16,6 @@ export const message = objectType({
     t.string("content");
     t.string("postDate");
   },
-});
-
-export const newMessageSubscription = subscriptionField("newMessage", {
-  type: "message",
-  args: {
-    channelId: nonNull(
-      intArg({
-        description: "Id of the channel",
-      })
-    ),
-  },
-  description: "Fires anytime a new message is posted for a particular chat",
-  subscribe: async (_, { channelId }, context) => {
-    return context.prisma.$subscribe
-      .message({
-        mutation_in: "CREATED",
-        node: { channel: { id: channelId } },
-      })
-      .node();
-  },
-  resolve: (payload) => payload,
 });
 
 export const postmessage = extendType({
@@ -87,7 +58,11 @@ export const getmessageById = extendType({
 export const deletemessage = extendType({
   type: "Mutation",
   definition: (t) => {
-    t.field("deletemessage", { type: message, resolve: deleteMessageResolver });
+    t.field("deleteMessage", {
+      args: { id: nonNull(intArg()) },
+      type: message,
+      resolve: deleteMessageResolver,
+    });
   },
 });
 export * from "./message";
