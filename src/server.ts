@@ -13,6 +13,7 @@ import * as user from "./models/user";
 import * as release from "./models/release";
 import * as artist from "./models/artist";
 import * as channel from "./models/channel";
+import * as playlist from "./models/playlist";
 import * as message from "./models/message";
 import { authController } from "./controllers/authController";
 import { fileController } from "./controllers/fileController";
@@ -24,7 +25,7 @@ export const prisma = new PrismaClient();
 
 const main = async () => {
   const schema = makeSchema({
-    types: [user, review, release, artist, message, channel],
+    types: [user, review, release, artist, message, channel, playlist],
     outputs: {
       typegen: join(__dirname, "../generated/nexus-typegen.ts"),
       schema: join(__dirname, "../generated/schema.graphql"),

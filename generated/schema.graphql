@@ -11,6 +11,7 @@ type Mutation {
   deleteArtist: artist
   deleteChannel: channel
   deleteMessage(id: Int!): message
+  deletePlaylist(id: Int!): playlist
   deleteRelease: release
   deleteReview: review
   deleteUser: user
@@ -18,6 +19,7 @@ type Mutation {
   postArtist(born: String!, genres: [String]!, name: String!, relatedArtists: [String]!, type: String!): artist
   postChannel(releaseId: Int!, title: String!): channel
   postMessage(channelId: Int!, content: String!, posterId: Int!): message
+  postPlaylist(contentIds: [Int!], posterId: Int!, title: String!): playlist
   postRelease(artistId: Int!, cover: String!, genres: [String]!, language: String!, released: String!, title: String!, tracks: [String]!, type: String!): release
   postReview(description: String!, posterId: Int!, rating: Int!, releaseId: Int!, title: String!): review
   register(email: String!, password: String!, username: String!): user
@@ -34,14 +36,16 @@ type Query {
   getArtistById(id: Int!): artist
   getChannelById(id: Int!): channel
   getChatMessages(id: Int!): [message]
+  getMessageById(id: Int!): message
+  getPlaylistById(id: Int!): playlist
   getReleaseById(id: Int!): release
   getReleaseReviews(id: Int!): [review]
   getReviewById: review
   getReviews: [review]
   getUser: user
   getUserById(id: Int!): user
+  getUserPlaylists(id: Int!): [playlist]
   getUsers: [user]
-  getmessageById(id: Int!): message
   searchArtists(search: String!): [artist]
   searchReleases(search: String!): [release]
 }
@@ -67,6 +71,13 @@ type message {
   id: Int
   postDate: String
   posterId: Int
+}
+
+type playlist {
+  contentIds: [Int]
+  id: Int
+  posterId: Int
+  title: String
 }
 
 type release {

@@ -44,10 +44,10 @@ export const getChatmessages = extendType({
   },
 });
 
-export const getmessageById = extendType({
+export const getMessageById = extendType({
   type: "Query",
   definition: (t) => {
-    t.field("getmessageById", {
+    t.field("getMessageById", {
       type: message,
       args: { id: nonNull(intArg()) },
       resolve: getMessageByIdResolver,
@@ -55,7 +55,7 @@ export const getmessageById = extendType({
   },
 });
 
-export const deletemessage = extendType({
+export const deleteMessage = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deleteMessage", {

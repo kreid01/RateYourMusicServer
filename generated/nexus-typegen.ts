@@ -54,6 +54,12 @@ export interface NexusGenObjects {
     postDate?: string | null; // String
     posterId?: number | null; // Int
   }
+  playlist: { // root type
+    contentIds?: Array<number | null> | null; // [Int]
+    id?: number | null; // Int
+    posterId?: number | null; // Int
+    title?: string | null; // String
+  }
   release: { // root type
     artistId?: number | null; // Int
     cover?: string | null; // String
@@ -103,6 +109,7 @@ export interface NexusGenFieldTypes {
     deleteArtist: NexusGenRootTypes['artist'] | null; // artist
     deleteChannel: NexusGenRootTypes['channel'] | null; // channel
     deleteMessage: NexusGenRootTypes['message'] | null; // message
+    deletePlaylist: NexusGenRootTypes['playlist'] | null; // playlist
     deleteRelease: NexusGenRootTypes['release'] | null; // release
     deleteReview: NexusGenRootTypes['review'] | null; // review
     deleteUser: NexusGenRootTypes['user'] | null; // user
@@ -110,6 +117,7 @@ export interface NexusGenFieldTypes {
     postArtist: NexusGenRootTypes['artist'] | null; // artist
     postChannel: NexusGenRootTypes['channel'] | null; // channel
     postMessage: NexusGenRootTypes['message'] | null; // message
+    postPlaylist: NexusGenRootTypes['playlist'] | null; // playlist
     postRelease: NexusGenRootTypes['release'] | null; // release
     postReview: NexusGenRootTypes['review'] | null; // review
     register: NexusGenRootTypes['user'] | null; // user
@@ -125,14 +133,16 @@ export interface NexusGenFieldTypes {
     getArtistById: NexusGenRootTypes['artist'] | null; // artist
     getChannelById: NexusGenRootTypes['channel'] | null; // channel
     getChatMessages: Array<NexusGenRootTypes['message'] | null> | null; // [message]
+    getMessageById: NexusGenRootTypes['message'] | null; // message
+    getPlaylistById: NexusGenRootTypes['playlist'] | null; // playlist
     getReleaseById: NexusGenRootTypes['release'] | null; // release
     getReleaseReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getReviewById: NexusGenRootTypes['review'] | null; // review
     getReviews: Array<NexusGenRootTypes['review'] | null> | null; // [review]
     getUser: NexusGenRootTypes['user'] | null; // user
     getUserById: NexusGenRootTypes['user'] | null; // user
+    getUserPlaylists: Array<NexusGenRootTypes['playlist'] | null> | null; // [playlist]
     getUsers: Array<NexusGenRootTypes['user'] | null> | null; // [user]
-    getmessageById: NexusGenRootTypes['message'] | null; // message
     searchArtists: Array<NexusGenRootTypes['artist'] | null> | null; // [artist]
     searchReleases: Array<NexusGenRootTypes['release'] | null> | null; // [release]
   }
@@ -155,6 +165,12 @@ export interface NexusGenFieldTypes {
     id: number | null; // Int
     postDate: string | null; // String
     posterId: number | null; // Int
+  }
+  playlist: { // field return type
+    contentIds: Array<number | null> | null; // [Int]
+    id: number | null; // Int
+    posterId: number | null; // Int
+    title: string | null; // String
   }
   release: { // field return type
     artistId: number | null; // Int
@@ -195,6 +211,7 @@ export interface NexusGenFieldTypeNames {
     deleteArtist: 'artist'
     deleteChannel: 'channel'
     deleteMessage: 'message'
+    deletePlaylist: 'playlist'
     deleteRelease: 'release'
     deleteReview: 'review'
     deleteUser: 'user'
@@ -202,6 +219,7 @@ export interface NexusGenFieldTypeNames {
     postArtist: 'artist'
     postChannel: 'channel'
     postMessage: 'message'
+    postPlaylist: 'playlist'
     postRelease: 'release'
     postReview: 'review'
     register: 'user'
@@ -217,14 +235,16 @@ export interface NexusGenFieldTypeNames {
     getArtistById: 'artist'
     getChannelById: 'channel'
     getChatMessages: 'message'
+    getMessageById: 'message'
+    getPlaylistById: 'playlist'
     getReleaseById: 'release'
     getReleaseReviews: 'review'
     getReviewById: 'review'
     getReviews: 'review'
     getUser: 'user'
     getUserById: 'user'
+    getUserPlaylists: 'playlist'
     getUsers: 'user'
-    getmessageById: 'message'
     searchArtists: 'artist'
     searchReleases: 'release'
   }
@@ -247,6 +267,12 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     postDate: 'String'
     posterId: 'Int'
+  }
+  playlist: { // field return type name
+    contentIds: 'Int'
+    id: 'Int'
+    posterId: 'Int'
+    title: 'String'
   }
   release: { // field return type name
     artistId: 'Int'
@@ -283,6 +309,9 @@ export interface NexusGenArgTypes {
     deleteMessage: { // args
       id: number; // Int!
     }
+    deletePlaylist: { // args
+      id: number; // Int!
+    }
     login: { // args
       email: string; // String!
       password: string; // String!
@@ -302,6 +331,11 @@ export interface NexusGenArgTypes {
       channelId: number; // Int!
       content: string; // String!
       posterId: number; // Int!
+    }
+    postPlaylist: { // args
+      contentIds?: number[] | null; // [Int!]
+      posterId: number; // Int!
+      title: string; // String!
     }
     postRelease: { // args
       artistId: number; // Int!
@@ -361,6 +395,12 @@ export interface NexusGenArgTypes {
     getChatMessages: { // args
       id: number; // Int!
     }
+    getMessageById: { // args
+      id: number; // Int!
+    }
+    getPlaylistById: { // args
+      id: number; // Int!
+    }
     getReleaseById: { // args
       id: number; // Int!
     }
@@ -370,7 +410,7 @@ export interface NexusGenArgTypes {
     getUserById: { // args
       id: number; // Int!
     }
-    getmessageById: { // args
+    getUserPlaylists: { // args
       id: number; // Int!
     }
     searchArtists: { // args
